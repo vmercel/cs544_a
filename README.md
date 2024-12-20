@@ -4,6 +4,16 @@ This is a robust 2-tier application that facilitates diet management and recomme
 
 ---
 
+
+## **Swagger UI**
+Explore and test the API endpoints interactively:
+![Swagger UI](swaggerui.png)
+
+Hosted at: [Swagger UI](https://cs544-app.azurewebsites.net/swagger-ui/index.html#/)
+
+
+---
+
 ## **Entities**
 
 ### 1. **Users**
@@ -77,10 +87,7 @@ This is a robust 2-tier application that facilitates diet management and recomme
 ## **System Architecture**
 
 ### **JMS Architecture**
-![JMS Architecture](https://via.placeholder.com/800x400.png?text=JMS+Architecture)
-
-### **Swagger UI**
-![Swagger UI](https://via.placeholder.com/800x400.png?text=Swagger+UI)
+![JMS Architecture](jmsarch.png)
 
 ---
 
