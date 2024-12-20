@@ -1,17 +1,27 @@
 package edu.miu.cs.cs544.mercel.jpa.monitoring.user;
 import edu.miu.cs.cs544.mercel.jpa.monitoring.email.EmailService;
 import edu.miu.cs.cs544.mercel.jpa.monitoring.email.TokenGenerator;
+import edu.miu.cs.cs544.mercel.jpa.monitoring.goals.Goal;
 import edu.miu.cs.cs544.mercel.jpa.monitoring.jms.JmsProducer;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class UserService {
-
+    @PersistenceContext
+    private EntityManager entityManager;
     @Autowired
     private UserRepository userRepository;
 
@@ -91,6 +101,28 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public List<UserEntity> findUsersByFoodLogDate(LocalDate date) {
+        return userRepository.findUsersByFoodLogDate(date);
+    }
+
+
+    public List<UserEntity> findUsersWithRoleAndGoalDateRange(String role, LocalDate startDate, LocalDate endDate) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<UserEntity> query = cb.createQuery(UserEntity.class);
+
+        Root<UserEntity> user = query.from(UserEntity.class);
+        Join<UserEntity, Goal> goal = user.join("goals");
+
+        query.select(user)
+                .where(cb.and(
+                        cb.equal(user.get("role"), role),
+                        cb.between(goal.get("startDate"), startDate, endDate)
+                ));
+
+        TypedQuery<UserEntity> typedQuery = entityManager.createQuery(query);
+        return typedQuery.getResultList();
     }
 }
 

@@ -1,9 +1,11 @@
 package edu.miu.cs.cs544.mercel.jpa.monitoring;
 
 import edu.miu.cs.cs544.mercel.jpa.monitoring.foodlog.FoodLog;
+import edu.miu.cs.cs544.mercel.jpa.monitoring.goals.Goal;
 import edu.miu.cs.cs544.mercel.jpa.monitoring.user.UserEntity;
 import edu.miu.cs.cs544.mercel.jpa.monitoring.vitals.Vitals;
 import edu.miu.cs.cs544.mercel.jpa.monitoring.foodlog.FoodLogRepository;
+import edu.miu.cs.cs544.mercel.jpa.monitoring.goals.GoalRepository;
 import edu.miu.cs.cs544.mercel.jpa.monitoring.user.UserRepository;
 import edu.miu.cs.cs544.mercel.jpa.monitoring.vitals.VitalsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,42 +28,39 @@ public class DataInitializer implements CommandLineRunner {
     private VitalsRepository vitalsRepository;
 
     @Autowired
+    private GoalRepository goalRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
-        // Create Users and assign usernames and passwords
+        // Create Users
+        System.out.println("STARTED DATA INITIALIZATION.");
+        UserEntity admin = new UserEntity();
+        admin.setUsername("admin");
+        admin.setName("MERCEL VUBANGSI");
+        admin.setEmail("vmercel@miu.edu");
+        admin.setRole("ADMIN");
+        admin.setPassword(passwordEncoder.encode("admin"));
+        userRepository.save(admin);
+
+
         UserEntity patient = new UserEntity();
-        patient.setUsername("user");  // Set username
+        patient.setUsername("user");
         patient.setName("John Doe");
         patient.setEmail("john.doe@example.com");
         patient.setRole("USER");
-        patient.setPassword(passwordEncoder.encode("user"));  // Encoding password
+        patient.setPassword(passwordEncoder.encode("user"));
         userRepository.save(patient);
 
         UserEntity dietitian = new UserEntity();
-        dietitian.setUsername("dietitian");  // Set username
+        dietitian.setUsername("dietitian");
         dietitian.setName("Jane Smith");
         dietitian.setEmail("jane.smith@example.com");
         dietitian.setRole("DIETITIAN");
         dietitian.setPassword(passwordEncoder.encode("dietitian"));
         userRepository.save(dietitian);
-
-        UserEntity admin = new UserEntity();
-        admin.setUsername("admin");  // Set username
-        admin.setName("Admin UserEntity");
-        admin.setEmail("admin@abc.com");
-        admin.setRole("ADMIN");
-        admin.setPassword(passwordEncoder.encode("admin"));
-        userRepository.save(admin);
-
-        UserEntity guest = new UserEntity();
-        guest.setUsername("guest");  // Set username
-        guest.setName("Guest UserEntity");
-        guest.setEmail("guest@example.com");
-        guest.setRole("GUEST");
-        guest.setPassword(passwordEncoder.encode("guest"));  // Encoding password
-        userRepository.save(guest);
 
         // Create Food Logs for patient
         FoodLog breakfastLog = new FoodLog();
@@ -70,7 +69,7 @@ public class DataInitializer implements CommandLineRunner {
         breakfastLog.setCalories(150);
         breakfastLog.setNutrients("Protein: 5g, Carbs: 27g, Fat: 2g");
         breakfastLog.setLogDate(LocalDate.now());
-        breakfastLog.setUser(patient);  // Associate with the patient
+        breakfastLog.setUser(patient);
         foodLogRepository.save(breakfastLog);
 
         FoodLog lunchLog = new FoodLog();
@@ -79,7 +78,7 @@ public class DataInitializer implements CommandLineRunner {
         lunchLog.setCalories(350);
         lunchLog.setNutrients("Protein: 30g, Carbs: 15g, Fat: 10g");
         lunchLog.setLogDate(LocalDate.now());
-        lunchLog.setUser(patient);  // Associate with the patient
+        lunchLog.setUser(patient);
         foodLogRepository.save(lunchLog);
 
         // Create Vitals for patient
@@ -88,26 +87,38 @@ public class DataInitializer implements CommandLineRunner {
         vitals.setCaloriesBurned(500);
         vitals.setSteps(8000);
         vitals.setRecordDate(LocalDate.now());
-        vitals.setUser(patient);  // Associate with the patient
+        vitals.setUser(patient);
         vitalsRepository.save(vitals);
 
-        // Create Food Logs for dietitian (optional, can be role-specific if needed)
-        FoodLog dietitianFoodLog = new FoodLog();
-        dietitianFoodLog.setMealType("Snack");
-        dietitianFoodLog.setFoodItem("Apple");
-        dietitianFoodLog.setCalories(95);
-        dietitianFoodLog.setNutrients("Protein: 0g, Carbs: 25g, Fat: 0g");
-        dietitianFoodLog.setLogDate(LocalDate.now());
-        dietitianFoodLog.setUser(dietitian);  // Associate with the dietitian
-        foodLogRepository.save(dietitianFoodLog);
+        // Create Goals for patient
+        Goal weightLossGoal = new Goal();
+        weightLossGoal.setGoalName("Lose 5kg");
+        weightLossGoal.setDescription("Achieve a weight loss of 5kg in 3 months through diet and exercise.");
+        weightLossGoal.setStartDate(LocalDate.now());
+        weightLossGoal.setEndDate(LocalDate.now().plusMonths(3));
+        weightLossGoal.setAchieved(false);
+        weightLossGoal.setUser(patient);
+        goalRepository.save(weightLossGoal);
 
-        // Optionally add vitals for dietitian
-        Vitals dietitianVitals = new Vitals();
-        dietitianVitals.setHeartRate(70);
-        dietitianVitals.setCaloriesBurned(300);
-        dietitianVitals.setSteps(10000);
-        dietitianVitals.setRecordDate(LocalDate.now());
-        dietitianVitals.setUser(dietitian);  // Associate with the dietitian
-        vitalsRepository.save(dietitianVitals);
+        Goal stepsGoal = new Goal();
+        stepsGoal.setGoalName("10k Steps Daily");
+        stepsGoal.setDescription("Walk 10,000 steps daily for overall health improvement.");
+        stepsGoal.setStartDate(LocalDate.now());
+        stepsGoal.setEndDate(LocalDate.now().plusMonths(1));
+        stepsGoal.setAchieved(false);
+        stepsGoal.setUser(patient);
+        goalRepository.save(stepsGoal);
+
+        // Optionally add goals for dietitian
+        Goal dietitianGoal = new Goal();
+        dietitianGoal.setGoalName("Increase Client Engagement");
+        dietitianGoal.setDescription("Engage with 10 new clients in a month.");
+        dietitianGoal.setStartDate(LocalDate.now());
+        dietitianGoal.setEndDate(LocalDate.now().plusMonths(1));
+        dietitianGoal.setAchieved(false);
+        dietitianGoal.setUser(dietitian);
+        goalRepository.save(dietitianGoal);
+
+        System.out.println("FINISHED DATA INITIALIZATION.");
     }
 }

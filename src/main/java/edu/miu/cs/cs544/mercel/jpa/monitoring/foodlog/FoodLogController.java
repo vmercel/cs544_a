@@ -122,4 +122,10 @@ public class FoodLogController {
         }
         return ResponseEntity.ok(foodLogs);
     }
+
+
+    @GetMapping("/food-logs/calories/{calories}")
+    public ResponseEntity<List<FoodLog>> getFoodLogsByCalories(@PathVariable int calories) {
+        return ResponseEntity.ok(foodLogRepository.findByCaloriesGreaterThan(calories));
+    }
 }

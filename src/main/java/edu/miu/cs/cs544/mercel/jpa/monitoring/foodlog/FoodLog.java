@@ -6,6 +6,10 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@NamedQuery(
+        name = "FoodLog.findByCaloriesGreaterThan",
+        query = "SELECT f FROM FoodLog f WHERE f.calories > :calories"
+)
 public class FoodLog {
 
     @Id

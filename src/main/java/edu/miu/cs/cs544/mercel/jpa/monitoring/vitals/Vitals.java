@@ -1,5 +1,6 @@
 package edu.miu.cs.cs544.mercel.jpa.monitoring.vitals;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.miu.cs.cs544.mercel.jpa.monitoring.user.UserEntity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class Vitals {
 
     @ManyToOne
     @JoinColumn(name = "user_id") // Creates a foreign key column in the Vitals table
+    @JsonIgnore
     private UserEntity user;
 
     // Getters and Setters

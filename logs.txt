@@ -10,3 +10,20 @@
 [2024-12-19T15:50:01.323009] Called method: FoodLogController.getFoodLogsByUserAndMealType
 [2024-12-19T15:52:31.389725] Called method: FoodLogController.createFoodLog
 [2024-12-19T15:54:03.017678] Called method: FoodLogController.createFoodLog
+[2024-12-20T12:00:48.462183] Called method: FoodLogController.createFoodLog
+[2024-12-20T12:02:32.341475] Called method: FoodLogController.createFoodLog
+[2024-12-20T12:03:08.036372] Called method: FoodLogController.getAllFoodLogs
+[2024-12-20T15:49:18.658923] [REPOSITORY] Called method: $Proxy143.save
+[2024-12-20T15:49:18.822493] [REPOSITORY] Called method: $Proxy143.save
+[2024-12-20T15:49:18.911016] [REPOSITORY] Called method: $Proxy143.save
+[2024-12-20T15:49:18.913030] [REPOSITORY] Called method: $Proxy146.save
+[2024-12-20T15:49:18.918097] [REPOSITORY] Called method: $Proxy146.save
+[2024-12-20T15:49:18.919768] [REPOSITORY] Called method: $Proxy147.save
+[2024-12-20T15:49:18.923062] [REPOSITORY] Called method: $Proxy148.save
+[2024-12-20T15:49:18.925488] [REPOSITORY] Called method: $Proxy148.save
+[2024-12-20T15:49:18.926986] [REPOSITORY] Called method: $Proxy148.save
+[2024-12-20T15:49:52.407035] [REPOSITORY] Called method: $Proxy143.findByUsername
+[2024-12-20T15:50:01.331154] [REPOSITORY] Called method: $Proxy143.findByUsername
+[2024-12-20T15:50:01.504062] [CONTROLLER] Called method: FoodLogController.createFoodLog
+[2024-12-20T15:50:01.505410] [REPOSITORY] Called method: $Proxy143.findById
+[2024-12-20T15:50:01.514054] [REPOSITORY] Called method: $Proxy146.save

@@ -17,20 +17,51 @@ public class LoggingAspect {
     private static final String LOG_FILE = "logs.txt";
 
     /**
-     * Logs each method execution in FoodLogController.
-     * Matches any public method in FoodLogController with any parameters.
+     * Logs each method execution in all controllers.
      */
-    @Before("execution(public * edu.miu.cs.cs544.mercel.jpa.monitoring.foodlog.FoodLogController.*(..))")
-    public void logBeforeEndpointCall(JoinPoint joinPoint) {
-        // Get method details
+    @Before("execution(public * edu.miu.cs.cs544.mercel.jpa.monitoring.*..*Controller.*(..))")
+    public void logControllerMethod(JoinPoint joinPoint) {
+        logMethodCall(joinPoint, "CONTROLLER");
+    }
+
+    /**
+     * Logs each method execution in all services.
+     */
+    @Before("execution(public * edu.miu.cs.cs544.mercel.jpa.monitoring.*..*Service.*(..))")
+    public void logServiceMethod(JoinPoint joinPoint) {
+        logMethodCall(joinPoint, "SERVICE");
+    }
+
+    /**
+     * Logs each method execution in all repositories.
+     */
+    @Before("execution(public * edu.miu.cs.cs544.mercel.jpa.monitoring.*..*Repository.*(..))")
+    public void logRepositoryMethod(JoinPoint joinPoint) {
+        logMethodCall(joinPoint, "REPOSITORY");
+    }
+
+    /**
+     * Logs the method call details.
+     *
+     * @param joinPoint the join point representing the method call
+     * @param layer the layer where the method is called (Controller, Service, Repository)
+     */
+    private void logMethodCall(JoinPoint joinPoint, String layer) {
         String methodName = joinPoint.getSignature().getName();
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String timestamp = LocalDateTime.now().toString();
 
-        // Create log message
-        String logMessage = String.format("[%s] Called method: %s.%s", timestamp, className, methodName);
+        String logMessage = String.format("[%s] [%s] Called method: %s.%s", timestamp, layer, className, methodName);
 
-        // Write to log file
+        writeLog(logMessage);
+    }
+
+    /**
+     * Writes the log message to the log file.
+     *
+     * @param logMessage the message to log
+     */
+    private void writeLog(String logMessage) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE, true))) {
             writer.write(logMessage);
             writer.newLine();
