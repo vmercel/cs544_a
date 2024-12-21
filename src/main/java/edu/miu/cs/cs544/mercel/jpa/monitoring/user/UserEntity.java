@@ -43,6 +43,9 @@ public class UserEntity {
     @Schema(description = "List of goals created by the user")
     private List<Goal> goals;
 
+    @Version
+    private int version; // Optimistic Locking Version Field
+
     // Getters and Setters
 
     public Long getId() {

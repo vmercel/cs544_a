@@ -18,6 +18,9 @@ public class Goal {
     private LocalDate endDate;
     private boolean isAchieved;
 
+    @Version
+    private int version; // Optimistic Locking Version Field
+
     @ManyToOne
     @JoinColumn(name = "user_id") // Links to UserEntity
     @JsonIgnore

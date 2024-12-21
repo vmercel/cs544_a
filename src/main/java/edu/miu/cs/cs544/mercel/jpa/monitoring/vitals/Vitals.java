@@ -17,6 +17,9 @@ public class Vitals {
     private int steps;
     private LocalDate recordDate;
 
+    @Version
+    private int version; // Optimistic Locking Version Field
+
     @ManyToOne
     @JoinColumn(name = "user_id") // Creates a foreign key column in the Vitals table
     @JsonIgnore

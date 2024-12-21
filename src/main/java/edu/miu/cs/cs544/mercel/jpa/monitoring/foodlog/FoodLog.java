@@ -22,6 +22,9 @@ public class FoodLog {
     private String nutrients; // Example: "Protein: 10g, Carbs: 30g"
     private LocalDate logDate;
 
+    @Version
+    private int version; // Optimistic Locking Version Field
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore // This breaks the circular reference
